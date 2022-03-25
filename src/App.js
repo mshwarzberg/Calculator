@@ -36,7 +36,7 @@ function App() {
 
         if (arrOfInps[valInInp] === '') {
           setErr(true)
-          return 'ERROR: ALUE IS NOT VALID'
+          return 'ERROR: VALUE IS NOT VALID'
         }
       }
       
