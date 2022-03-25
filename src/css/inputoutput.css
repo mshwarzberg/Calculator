@@ -1,0 +1,22 @@
+.inputval {
+    background-color: #fff;
+    color: green;
+    padding: 1rem;
+    font-weight: normal;
+    font-size: 2rem;
+    overflow-x: auto;
+    max-width: 49rem;
+    letter-spacing: 1px;
+}
+
+.showval {
+    overflow-x: auto;
+}
+
+.outputval {
+    padding: 1rem;
+    margin: 2rem auto 2rem auto;
+    font-size: 2rem;
+    background-color: white;
+    text-indent: -4px;
+}
