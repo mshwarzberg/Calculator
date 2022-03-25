@@ -19,7 +19,7 @@
     flex-direction: row;
 }
   
-.symbolsboard {
+.symbolboard {
     display: grid;
     grid-template-columns: auto auto;
     box-shadow: 2px 8px 4px 4px rgba(25,25,25,0.8);

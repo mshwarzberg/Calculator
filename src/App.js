@@ -192,7 +192,7 @@ function App() {
           </button>
         </div>
 
-        <div className="symbolsboard">
+        <div className="symbolboard">
             <button onClick={() => 
               calculateStuff()
             } 
