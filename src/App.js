@@ -7,13 +7,15 @@ function App() {
   const [parenthesis, setParenthesis] = useState(true)
   
   function addToInp(val) {
-    if (isNaN(userInp[userInp.length - 1]) && isNaN(val)) {
+    var lastItem = userInp[userInp.length - 1]
+    // reminder: make sure to prevent if using parentheses
+    if (isNaN(lastItem) && isNaN(val) && lastItem !== '.' && lastItem !== '(' && lastItem !== ')') {
       deleteOneItem()
-      console.log('test')
     }
     setUserInp(prevVal => prevVal + val)
   }
   
+  // reset all settings to their default states
   function allClear() {
       setUserInp('')
       setErr(false)
@@ -24,13 +26,20 @@ function App() {
   function deleteOneItem() {
     setUserInp(prevVal => prevVal.slice(0, -1))
   }
-
   function addParenthesis() {
-    if (!userInp.includes('(')) {
+
+    // count the amount of times the opening and closing parentheses appear in userInp
+    var openParent = (userInp.match(/\(/g) || []).length
+    var closeParent = (userInp.match(/\)/g) || []).length
+
+    // if they match open a new parentheses
+    if (openParent === closeParent) {
       setUserInp(prevVal => prevVal + '(')
       setParenthesis(false)
     }
-    if (userInp.includes('(')) {
+
+    // otherwise close the previous one
+    if (openParent > closeParent) {
       setUserInp(prevVal => prevVal + ')')
       setParenthesis(true)
     }
@@ -38,7 +47,7 @@ function App() {
 
   function calculateString(str) {
     
-    // remove the parentheses from the string
+    // remove the parentheses from the string if they're there
     if (str[0] === '(' && str[str.length - 1] === ')'){
       str = str.slice(1, str.indexOf(')'))
     }
