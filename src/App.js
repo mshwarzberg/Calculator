@@ -7,20 +7,30 @@ function App() {
   const [parenthesis, setParenthesis] = useState(true)
   
   function addToInp(val) {
+    if (isNaN(userInp[userInp.length - 1]) && isNaN(val)) {
+      deleteOneItem()
+      console.log('test')
+    }
     setUserInp(prevVal => prevVal + val)
   }
   
+  function allClear() {
+      setUserInp('')
+      setErr(false)
+      setOut('')
+      setParenthesis(true)
+  }
+
   function deleteOneItem() {
     setUserInp(prevVal => prevVal.slice(0, -1))
-    setParenthesis(prevParenthesis => !prevParenthesis)
   }
 
   function addParenthesis() {
-    if (parenthesis) {
+    if (!userInp.includes('(')) {
       setUserInp(prevVal => prevVal + '(')
       setParenthesis(false)
     }
-    if (!parenthesis) {
+    if (userInp.includes('(')) {
       setUserInp(prevVal => prevVal + ')')
       setParenthesis(true)
     }
@@ -63,7 +73,7 @@ function App() {
     mathArr = mathArr.slice(0, -1)
 
     // first complete all the divsion and multiplication
-    var symbols = {symOne: 'x', symTwo: '÷'}
+    var symbols = {symOne: '×', symTwo: '÷'}
 
     // if the symbols do not exist in the array, change the values to addition and subtraction
     if (!mathArr.includes(symbols.symOne) && !mathArr.includes(symbols.symTwo)) {
@@ -91,7 +101,7 @@ function App() {
         if (mathArrVal === symbols.symOne || mathArrVal === symbols.symTwo) {
 
           // do multiplication
-          if (mathArrVal === 'x') {
+          if (mathArrVal === '×') {
           var multiplication = (mathArr[mathArrInd-1]*1) * (mathArr[mathArrInd+1]*1)
           mathArr.splice(mathArrInd-1, 3, multiplication)
           mathArrInd = 0
@@ -132,7 +142,6 @@ function App() {
         let computeParentheses = userInp.slice(userInp.indexOf('('), userInp.indexOf(')') + 1)
         const something = calculateString(computeParentheses)
         finalEval = userInp.replace(computeParentheses, something)
-        console.log(finalEval)
       }
       return calculateString(finalEval)
     })
@@ -245,18 +254,13 @@ function App() {
           <button onClick={addParenthesis} 
             className="inputsymbol" 
           >
-            {parenthesis ? '(' : ')'}
+            ( )
           </button>
         </div>
 
         <div className="symbolboard">
             <button 
-              onClick={() => {
-                setUserInp('')
-                setErr(false)
-                setOut('')
-                setParenthesis(true)
-              }} 
+              onClick={allClear} 
               className="inputsymbol"
               id="allclearsymbol"
             >
@@ -284,11 +288,11 @@ function App() {
               ÷
             </button>
             <button onClick={() => 
-              addToInp('x')
+              addToInp('×')
             } 
               className="inputsymbol" 
             >
-              x
+              &#215;
             </button>
             <button onClick={() => 
               addToInp('-')
@@ -298,13 +302,16 @@ function App() {
             >
               -
             </button>
-            <button onClick={() => 
+            <button onClick={() => {
               addToInp('^')
-            } 
+            }} 
               className="inputsymbol" 
-              id="exponentsymbol"
+              id='exponentsymbol'
             >
-              x<sup>x</sup>
+              &#119909;
+              <sup>
+                x
+              </sup>
             </button>
           </div>
         </div>
