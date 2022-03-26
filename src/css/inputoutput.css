@@ -1,12 +1,21 @@
 .inputval {
-    background-color: #fff;
-    color: green;
+    background-color: rgba(35, 35, 35, 0.8);
+    border-radius: 1rem;
+    color: royalblue;
     padding: 1rem;
-    font-weight: normal;
-    font-size: 2rem;
+    font-weight: bold;
+    font-size: 2.5rem;
     overflow-x: auto;
+    overflow-y: hidden;
     max-width: 49rem;
-    letter-spacing: 1px;
+    text-indent: -1rem;
+    text-shadow: 2px 2px 2px black;
+    height: 4rem;
+}
+
+.inputval > p {
+    float: right;
+    margin: 0.52rem 1rem auto auto;
 }
 
 .showval {
@@ -19,4 +28,25 @@
     font-size: 2rem;
     background-color: white;
     text-indent: -4px;
+}
+
+#equalssymbol {
+    font-size: 2.5rem;
+    background-color: blue;
+    border: 3px solid skyblue;
+    box-shadow: 3px 3px 10px black;
+    width: 10%;
+    color: white;
+    text-shadow: 2px 2px 3px skyblue;
+    float: right;
+    margin-top: 0.3rem;
+}
+
+#equalssymbol:hover {
+    border: 1px solid darkgreen;
+    box-shadow: 2px 2px 2px green;
+    animation: hoverButtonScale 200ms forwards 1 linear;
+    cursor: pointer;
+    background-color: skyblue;
+    text-shadow: 2px 2px 1px blue;
 }

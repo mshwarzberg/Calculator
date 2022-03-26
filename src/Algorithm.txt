@@ -1,0 +1,125 @@
+Ideas:
+
+Prevent the user from inputting multiple symbols in a row
+
+
+
+Processing user input:
+
+With the initial userInp the only error to check is parentheses. 
+
+If setCloseParenthesis is false it means the parentheses are not closed. Return error
+
+
+
+Copying userInp to an array:
+
+If there are parentheses get everything in the parentheses.
+
+Add the items to the array inputArray (without the parentheses)
+
+Calculate the items in inputArray 
+
+Once there are only numbers in the parentheses
+
+Go back and loop through userInp and find the first parentheses.
+
+Replace everything from the first '(' until the next ')'
+
+
+
+
+
+
+let arrOfInps = []
+      let numStr = ''
+      
+      for (let indexOfInput = 0; indexOfInput <= userInp.length; indexOfInput++) {
+        
+        while (!isNaN(userInp[indexOfInput]) || userInp[indexOfInput] === '.') {
+          numStr += userInp[indexOfInput]
+          indexOfInput++
+        } 
+
+        if (indexOfInput === 0 && (userInp[indexOfInput] === '-' || userInp[indexOfInput] === '(')) {
+          arrOfInps.push(userInp[indexOfInput])
+          continue
+        }
+
+        if (isNaN(userInp[indexOfInput])) {
+          if (isNaN(userInp[indexOfInput - 1]) && userInp[indexOfInput - 1] !== ')') {
+            setErr(true)
+            return 'ERROR: INPUT IS NOT VALID'
+          }
+          arrOfInps.push(numStr)
+          arrOfInps.push(userInp[indexOfInput])
+          numStr = ''
+        }
+        console.log(arrOfInps)
+        if (arrOfInps[indexOfInput] === '') {
+          setErr(true)
+          return 'ERROR: RESULT IS NOT VALID'
+        }
+      }
+      
+      var symbols = {symOne: 'x', symTwo: '÷'}
+      const arrLength = arrOfInps.length
+      
+      while (arrOfInps.includes('(') && arrOfInps.includes(')')) {
+        let firstParenthesis = arrOfInps.indexOf('(')
+        let secondParenthesis = arrOfInps.indexOf(')')
+        console.log(firstParenthesis, secondParenthesis);
+      }
+      if (!arrOfInps.includes(symbols.symOne) && !arrOfInps.includes(symbols.symTwo)) {
+        symbols = {
+          symOne: '+', 
+          symTwo: '-'
+        }
+
+        while (arrOfInps.includes(symbols.symOne) || arrOfInps.includes(symbols.symTwo)) {
+          
+          for (let strInd = 0; strInd + 1 <= arrLength; strInd++) {
+            const strChar = arrOfInps[strInd]
+            
+            if (strChar === symbols.symTwo || strChar === symbols.symOne) {
+
+              if (strChar === 'x') {
+                let multiply = (arrOfInps[strInd-1]*1) * (arrOfInps[strInd+1]*1)
+                arrOfInps.splice(strInd-1, 3, multiply)
+                strInd = 0
+
+              } else if (strChar === '÷') {
+                let divide = (arrOfInps[strInd-1]*1) / (arrOfInps[strInd+1]*1)
+                arrOfInps.splice(strInd-1, 3, divide)
+                strInd = 0
+
+              } else if (strChar === '+') {
+                let add = (arrOfInps[strInd-1]*1) + (arrOfInps[strInd+1]*1)
+                arrOfInps.splice(strInd-1,3, add)
+                strInd = 0
+
+              } else if (strChar === '-') {
+                let subtract = (arrOfInps[strInd-1]*1) - (arrOfInps[strInd+1]*1)
+                arrOfInps.splice(strInd-1,3, subtract)
+                strInd = 0
+              }
+            }
+        }
+        symbols = {symOne: '+', symTwo: '-'}
+      }
+
+      
+      if (isNaN(arrOfInps[0])) {
+        setErr(true)
+        return 'ERROR: DID NOT RETURN VALID NUMBER'
+      } 
+      if (arrOfInps[0] === Infinity) {
+        setErr(true)
+        return 'ERROR: CANNOT DIVIDE BY ZERO'
+      }
+    }
+
+      setErr(false)
+      return arrOfInps
+      
+    }

@@ -56,13 +56,10 @@
     border: 1px solid black;
     border-radius: 4px;
 }  
-
-#equalssymbol {
-    font-size: 4rem;
+#allclearsymbol {
     width: 100%;
     grid-column: span 2;
 }
-
 #minussymbol {
     font-weight: 100;
     font-size: 7rem;
@@ -75,4 +72,8 @@
     background-color: darkgreen;
     cursor: pointer;
     font-size: 2.5rem;
+}
+
+.inputsymbol:hover {
+    background-color: rgb(0, 50, 0);
 }
