@@ -1,10 +1,55 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function App() {
-  const [userInp, setUserInp] = useState("63×(321^(1÷6)+65×(123-65)+2)÷(25)");
+  const [userInp, setUserInp] = useState("");
   const [out, setOut] = useState("");
   const [err, setErr] = useState(false);
 
+  useEffect(() => {
+    function handleKeyDown(e) {
+      // if user clicks backspace
+      if (e.keyCode === 8) {
+        setUserInp((prevVal) => prevVal.slice(0, -1));
+      }
+      // if user clicks enter
+      if (e.keyCode === 13) {
+        manageUserInp();
+      }
+      // if user clicks number
+      if (
+        // number row
+        ((e.keyCode >= 48 && e.keyCode <= 57) ||
+          // number pad
+          (e.keyCode >= 96 && e.keyCode <= 105)) &&
+        // special chars won't be added
+        e.shiftKey === false
+      ) {
+        addToInp(e.key);
+      }
+      // add '+', '-', '.', '^', '(', ')'
+      if (
+        e.key === "+" ||
+        e.key === "-" ||
+        e.key === "." ||
+        e.key === "^" ||
+        e.key === "(" ||
+        e.key === ")"
+      ) {
+        addToInp(e.key);
+      }
+      // add '×'
+      if (e.key === "*" || e.key === "x") {
+        addToInp("×");
+      }
+      if (e.key === "/") {
+        addToInp("÷");
+      }
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    return function cleanup() {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [addToInp, manageUserInp]);
   function addToInp(val) {
     var lastItem = userInp[userInp.length - 1];
     // if the previous character in the input is a non number or one of the three chars mentioned replace the character with the new input
@@ -150,13 +195,18 @@ function App() {
   }
 
   function manageUserInp() {
+
+    
     setOut(() => {
-      // check if parentheses amount don't match 
+      if (userInp.length === 0) {
+        return 'Nothing to see here. Move along'
+      }
+      // check if parentheses amount don't match
       const totalOpen = (userInp.match(/\(/g) || []).length;
       const totalClosed = (userInp.match(/\)/g) || []).length;
 
       if (totalClosed !== totalOpen) {
-        return "close yo goddamn parentheses";
+        return "Close yo goddamn parentheses";
       }
 
       let compute = userInp;
@@ -190,7 +240,7 @@ function App() {
             parentheses = parentheses.slice(a + 1, b);
             // if the new sliced and diced string does not include subsets of parentheses
             if (!parentheses.includes("(") && !parentheses.includes(")")) {
-              const insertVal = "(" + parentheses + ")"
+              const insertVal = "(" + parentheses + ")";
               // swap out the parentheses value for a new shiny parentheses-less value and assign it to compute so it can be checked again.
               compute = compute.replace(
                 // the old parentheses value
@@ -203,7 +253,6 @@ function App() {
               break;
             }
           }
-          
         }
       }
       // if compute does not contain any parentheses calculate it and return the value
@@ -215,7 +264,7 @@ function App() {
     <main className="calculator">
       <h1>Calculator</h1>
 
-      <div className={err ? "showvalerr" : "showval"}>
+      <div className={err ? "showvalerr" : "showval"} title='type to add to the input'>
         <div className="inputval">
           <button
             onClick={() => {
@@ -226,7 +275,7 @@ function App() {
           >
             =
           </button>
-          <p>&nbsp;&nbsp;{userInp}</p>
+          {<p>&nbsp;&nbsp;{userInp}</p>}
         </div>
 
         {err && (
