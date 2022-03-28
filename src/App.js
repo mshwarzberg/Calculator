@@ -48,12 +48,6 @@ function App() {
   }
 
   function calculateString(str) {
-    // remove the parentheses from the string if they're there
-    if (str[0] === "(" && str[str.length - 1] === ")") {
-      str = str.slice(1, str.indexOf(")"));
-      return str;
-    }
-
     let tempStr = "";
     let mathArr = [];
 
@@ -155,7 +149,7 @@ function App() {
     return mathArr;
   }
 
-  function calculateStuff() {
+  function manageUserInp() {
     setOut(() => {
       // check if parentheses amount don't match 
       const totalOpen = (userInp.match(/\(/g) || []).length;
@@ -225,7 +219,7 @@ function App() {
         <div className="inputval">
           <button
             onClick={() => {
-              calculateStuff();
+              manageUserInp();
             }}
             id="equalssymbol"
             title="Get Result"
