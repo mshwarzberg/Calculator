@@ -7,24 +7,39 @@ function App() {
   const [out, setOut] = useState("");
   const [err, setErr] = useState(false);
 
-  
   function addToInp(val) {
     const lastItem = userInp[userInp.length - 1];
+    // if there is a period in the current 'number set' (meaning it's already a float) don't allow another period
+    if (val === '.') {
+      for (let ind = userInp.length - 1; ind >= 0; ind--) {
+        if (userInp[ind] === '.') {
+          return
+        }
+        if (isNaN(userInp[ind])) {
+          break
+        }
+      }
+    }
     // if the previous character in the input is a non number or one of the three chars mentioned replace the character with the new input
     if (
       isNaN(lastItem) &&
       isNaN(val) &&
       lastItem !== "." &&
       lastItem !== "(" &&
-      lastItem !== ")"
-    ) {
+      lastItem !== ")" &&
+      val !== '('
+
+      ) {
       setUserInp((prevVal) => prevVal.slice(0, -1));
     }
     // if a user adds a number after closing parentheses, or if a user adds opening parentheses and the previous character is a number, automatically add a multiplication symbol beforehand
-    if (lastItem === ')' || (val === '(' && Number(lastItem))) {
-      setUserInp(prevVal => prevVal + '×')
+    if (
+      (lastItem === ")" && (Number(val) || val === '(')) ||
+      (val === "(" && Number(lastItem))
+    ) {
+      setUserInp((prevVal) => prevVal + "×");
     }
-    // if a user adds opening parentheses and the previous character is a number add a multipl
+    
     setUserInp((prevVal) => prevVal + val);
   }
 
@@ -39,37 +54,40 @@ function App() {
 
     // if they match open a new parentheses
     if (openParent === closeParent || (isNaN(prevItem) && prevItem !== ")")) {
-      return setUserInp((prevVal) => prevVal + "(");
+      return addToInp("(");
     }
 
     if (openParent > closeParent) {
-      return setUserInp((prevVal) => prevVal + ")");
+      return addToInp(")");
     }
   }
 
   function calculateString(str) {
     // this matches all the floats, negatives and integers in the string
-    let mathArr = str.match(/([-]\d+[.]\d+)?([-]\d+)?(\d+[.]\d+)?(\d+)?/g)
+    let mathArr = str.match(/([-]\d+[.]\d+)?([-]\d+)?(\d+[.]\d+)?(\d+)?/g);
     // this matches all the arithmetic symbols
-    const symbolsInStr = str.match(/[+^÷×]/g)
+    const symbolsInStr = str.match(/[+^÷×]/g);
 
     // this will be the index in the array of symbols
-    let symbolsInStrInd = 0
+    let symbolsInStrInd = 0;
 
     // insert the symbols from the array of symbols into the array of numbers at the index where regex didn't match anything (it returns an empty string)
-    for (let arrInd = 0; arrInd < mathArr.length;arrInd++) {
-
+    for (let arrInd = 0; arrInd < mathArr.length; arrInd++) {
       // if the index is empty (meaning it didn't match in regex), pull the value from the symbols array
-      if (mathArr[arrInd] === '' && symbolsInStr) {
-        mathArr[arrInd] = symbolsInStr[symbolsInStrInd]
-        symbolsInStrInd++
+      if (mathArr[arrInd] === "" && symbolsInStr) {
+        mathArr[arrInd] = symbolsInStr[symbolsInStrInd];
+        symbolsInStrInd++;
       }
     }
     // add a '+' before every negative number. Pretty dang specific example: 6÷(0-1) would return a 'divided by zero error' because the 0 won't go away, and the program would read it as 6÷0-1
-    for (let arrInd = 0; arrInd+1 < mathArr.length; arrInd++) {
-      if (mathArr[arrInd][0] === '-' && arrInd !== 0 && (mathArr[arrInd-1].match(/[^+÷×]/g))) {
-        mathArr.splice(arrInd, 0, '+')
-        arrInd++
+    for (let arrInd = 0; arrInd + 1 < mathArr.length; arrInd++) {
+      if (
+        mathArr[arrInd][0] === "-" &&
+        arrInd !== 0 &&
+        mathArr[arrInd - 1].match(/[^+÷×]/g)
+      ) {
+        mathArr.splice(arrInd, 0, "+");
+        arrInd++;
       }
     }
     // remove the final undefined from the array to clean it up
@@ -82,7 +100,6 @@ function App() {
       !mathArr.includes(symbols.symOne) &&
       !mathArr.includes(symbols.symTwo)
     ) {
-      
       symbols = { symOne: "+", symTwo: "-" };
     }
 
@@ -103,10 +120,9 @@ function App() {
     ) {
       for (let mathArrInd = 0; mathArrInd < mathArrLength; mathArrInd++) {
         let mathArrVal = mathArr[mathArrInd];
-        
+
         // this will check if the symbol matches the one that should be calculating first. Without this, as its looping it'll ignore the symbols and do calculations in the wrong order.
         if (mathArrVal === symbols.symOne || mathArrVal === symbols.symTwo) {
-          
           // do multiplication
           if (mathArrVal === "×") {
             var multiplication =
@@ -116,7 +132,8 @@ function App() {
           }
           // do division
           if (mathArrVal === "÷") {
-            var division = (mathArr[mathArrInd - 1]*1) / (mathArr[mathArrInd + 1]*1)
+            var division =
+              (mathArr[mathArrInd - 1] * 1) / (mathArr[mathArrInd + 1] * 1);
             mathArr.splice(mathArrInd - 1, 3, division);
             mathArrInd = 0;
           }

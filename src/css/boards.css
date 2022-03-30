@@ -16,7 +16,7 @@
 .symbolboard {
     display: grid;
     grid-template-columns: auto auto;
-    box-shadow: 2px 8px 4px 4px rgba(25,25,25,0.8);
+    box-shadow: 6px 8px 6px #00000080;
     margin-left: 4px;
 }
 
@@ -24,19 +24,20 @@
     display: grid;
     grid-template-columns: auto auto auto;
     margin-right: 9px;
-    box-shadow: 2px 8px 4px 4px rgba(25,25,25,0.8);
+    box-shadow: 6px 8px 6px #00000080;
 }
   
 .inputnumber {
-    font-size: 2rem;
+    font-size: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     width: 10rem;
     height: 10rem;
     background-color: #9999ff;
-    border: 1px solid rgb(125,25,25);
+    border: 1px solid #000000;
     border-radius: 4px;
+    text-shadow: 2px 2px 0 #aaaaff;
 }
   
 .inputsymbol {
@@ -44,8 +45,8 @@
     width: 10rem;
     height: 10rem;
     font-size: 3rem;
-    color: rgb(200,200,200);
-    text-shadow: 3px 3px 0 black;
+    color: #bbbbbb;
+    text-shadow: 3px 3px 0 #000066;
     border: 1px solid black;
     border-radius: 4px;
 }  

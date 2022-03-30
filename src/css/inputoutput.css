@@ -8,7 +8,7 @@
 }
 
 .inputval {
-    background-color: rgba(35, 35, 35, 0.8);
+    background-color: #33333355;
     border-radius: 6px;
     color: royalblue;
     padding: 1rem;
@@ -28,9 +28,8 @@
 }
 
 .outputval {
-    background-color: rgba(35, 35, 35, 0.8);
+    background-color: #00ff0033;
     border-radius: 6px;
-    color: royalblue;
     padding: 1rem;
     font-weight: bold;
     font-size: 2rem;
@@ -40,15 +39,18 @@
     text-shadow: 2px 2px 2px black;
     text-align: right;
     margin-bottom: 1rem;
+    color: #009900;
 }
 
 .outputerr {
+    text-align: right;
     padding: 1rem;
-    margin: 2rem auto 2rem auto;
+    margin-bottom: 1rem;
     font-size: 2rem;
     color: #ff0000;
     text-indent: -4px;
-    background-color: #fff;
+    border-radius: 6px;
+    background-color: #66000055;
     font-family: 'Roboto Condensed', sans-serif;
 }
 
