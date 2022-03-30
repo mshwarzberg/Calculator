@@ -3,13 +3,13 @@ import Board from "./Board";
 import InputField from "./InputField";
 
 function App() {
-  const [userInp, setUserInp] = useState("6÷(0-1)");
+  const [userInp, setUserInp] = useState("");
   const [out, setOut] = useState("");
   const [err, setErr] = useState(false);
 
   
   function addToInp(val) {
-    var lastItem = userInp[userInp.length - 1];
+    const lastItem = userInp[userInp.length - 1];
     // if the previous character in the input is a non number or one of the three chars mentioned replace the character with the new input
     if (
       isNaN(lastItem) &&
@@ -18,9 +18,13 @@ function App() {
       lastItem !== "(" &&
       lastItem !== ")"
     ) {
-      //
       setUserInp((prevVal) => prevVal.slice(0, -1));
     }
+    // if a user adds a number after closing parentheses, or if a user adds opening parentheses and the previous character is a number, automatically add a multiplication symbol beforehand
+    if (lastItem === ')' || (val === '(' && Number(lastItem))) {
+      setUserInp(prevVal => prevVal + '×')
+    }
+    // if a user adds opening parentheses and the previous character is a number add a multipl
     setUserInp((prevVal) => prevVal + val);
   }
 
@@ -45,7 +49,7 @@ function App() {
 
   function calculateString(str) {
     // this matches all the floats, negatives and integers in the string
-    let mathArr = str.match(/([-]\d+)?(\d+[.]\d+)?(\d+)?/g)
+    let mathArr = str.match(/([-]\d+[.]\d+)?([-]\d+)?(\d+[.]\d+)?(\d+)?/g)
     // this matches all the arithmetic symbols
     const symbolsInStr = str.match(/[+^÷×]/g)
 
@@ -61,7 +65,7 @@ function App() {
         symbolsInStrInd++
       }
     }
-    // add a '+' before every negative number to make sure it
+    // add a '+' before every negative number. Pretty dang specific example: 6÷(0-1) would return a 'divided by zero error' because the 0 won't go away, and the program would read it as 6÷0-1
     for (let arrInd = 0; arrInd+1 < mathArr.length; arrInd++) {
       if (mathArr[arrInd][0] === '-' && arrInd !== 0 && (mathArr[arrInd-1].match(/[^+÷×]/g))) {
         mathArr.splice(arrInd, 0, '+')
@@ -70,7 +74,6 @@ function App() {
     }
     // remove the final undefined from the array to clean it up
     mathArr = mathArr.slice(0, -1);
-    console.log(mathArr);
     // first complete all the divsion and multiplication
     var symbols = { symOne: "×", symTwo: "÷" };
 
@@ -101,7 +104,7 @@ function App() {
       for (let mathArrInd = 0; mathArrInd < mathArrLength; mathArrInd++) {
         let mathArrVal = mathArr[mathArrInd];
         
-        // this will check if the symbol matches the one that should be calculating first
+        // this will check if the symbol matches the one that should be calculating first. Without this, as its looping it'll ignore the symbols and do calculations in the wrong order.
         if (mathArrVal === symbols.symOne || mathArrVal === symbols.symTwo) {
           
           // do multiplication
@@ -136,6 +139,7 @@ function App() {
       // once the for loop is completed all the chars switch to addition and subtraction
       symbols = { symOne: "+", symTwo: "-" };
     }
+    // if a user tries to divide by zero
     if (mathArr[0] === Infinity) {
       setErr(true);
       setOut("You tryna break the universe? You can't divide by zero");
@@ -145,7 +149,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className="block">
       <InputField
         setErr={setErr}
         userInp={userInp}

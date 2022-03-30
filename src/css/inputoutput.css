@@ -1,16 +1,16 @@
 .inputval {
     background-color: rgba(35, 35, 35, 0.8);
-    border-radius: 1rem;
+    border-radius: 6px;
     color: royalblue;
     padding: 1rem;
     font-weight: bold;
     font-size: 2.5rem;
     overflow-x: auto;
-    overflow-y: hidden;
     max-width: 49rem;
     text-indent: -1rem;
     text-shadow: 2px 2px 2px black;
     height: 4rem;
+    margin-bottom: 1rem;
 }
 
 .inputval > p {
@@ -18,13 +18,19 @@
     margin: 0.52rem 1rem auto auto;
 }
 
-
 .outputval {
+    background-color: rgba(35, 35, 35, 0.8);
+    border-radius: 6px;
+    color: royalblue;
     padding: 1rem;
-    margin: 2rem auto 2rem auto;
+    font-weight: bold;
     font-size: 2rem;
-    background-color: white;
-    text-indent: -4px;
+    overflow-x: auto;
+    max-width: 49rem;
+    text-indent: -1rem;
+    text-shadow: 2px 2px 2px black;
+    text-align: right;
+    margin-bottom: 1rem;
 }
 
 .outputerr {
