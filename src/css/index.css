@@ -1,3 +1,12 @@
+@keyframes transportFromRight {
+  0% {
+    transform: translateX(50vw)
+    }
+  100% {
+    transform: translateX(0vw);
+}
+}
+
 body {
   background-color: grey;
   display: flex;
@@ -24,4 +33,5 @@ h1 {
   background-color: #444444;
   padding: 2rem;
   border-radius: 2rem;
+  animation: 800ms linear 0s 1 transportFromRight;
 }
