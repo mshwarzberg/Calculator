@@ -4,7 +4,7 @@ import InputField from "./InputField";
 
 function App() {
   // these should be self explanatory
-  const [userInp, setUserInp] = useState("");
+  const [userInp, setUserInp] = useState("6×(3-3)");
   const [out, setOut] = useState("");
   const [err, setErr] = useState(false);
   // handle user input
@@ -84,15 +84,16 @@ function App() {
         mathArr[arrInd][0] === "-" &&
         arrInd !== 0 &&
         mathArr[arrInd - 1].match(/[^+÷×]/g)
-      ) {
-        // insert '+' into the previous slot in the array
-        mathArr.splice(arrInd, 0, "+");
-        arrInd++;
+        ) {
+          // insert '+' into the previous slot in the array
+          mathArr.splice(arrInd, 0, "+");
+          arrInd++;
+        }
       }
-    }
-    // remove the final undefined from the array to clean it up
-    mathArr = mathArr.slice(0, -1);
-    // first complete all the divsion and multiplication
+      // remove the final undefined from the array to clean it up
+      mathArr = mathArr.slice(0, -1);
+      // first complete all the divsion and multiplication
+      
     var symbols = { symOne: "×", symTwo: "÷" };
 
     // if the symbols do not exist in the array, change the values to addition and subtraction
@@ -105,7 +106,7 @@ function App() {
 
     // the length of the array will change so keeping a constant will prevent the for loop from breaking
     const mathArrLength = mathArr.length;
-
+    
     // calculate exponents before other arithmetics.
     while (mathArr.includes("^")) {
       const exponentInd = mathArr.indexOf("^");
@@ -113,6 +114,7 @@ function App() {
         (mathArr[exponentInd - 1] * 1) ** (mathArr[exponentInd + 1] * 1);
       mathArr.splice(exponentInd - 1, 3, exponent);
     }
+    
     // as long as mathArray contains mathematical symbols calculate stuff
     while (
       mathArr.includes(symbols.symOne) ||
@@ -120,7 +122,6 @@ function App() {
     ) {
       for (let mathArrInd = 0; mathArrInd < mathArrLength; mathArrInd++) {
         let mathArrVal = mathArr[mathArrInd];
-
         // this will check if the symbol matches the one that should be calculating first. Without this, as its looping it'll ignore the symbols and do calculations in the wrong order.
         if (mathArrVal === symbols.symOne || mathArrVal === symbols.symTwo) {
           // do multiplication
@@ -161,6 +162,9 @@ function App() {
       // once multiplication and division are completed, do addition and subtraction
       symbols = { symOne: "+", symTwo: "-" };
     }
+    if (mathArr[0] === 0) {
+      return '0'
+    }
     // if a user tries to divide by zero, or give a calculation that returns a value that is too high.
     if (mathArr[0] === Infinity) {
       setErr(true);
@@ -172,19 +176,21 @@ function App() {
   return (
     <div className="block">
       <InputField
-        setErr={setErr}
         userInp={userInp}
+        setUserInp={setUserInp}
+        out={out}
         setOut={setOut}
         err={err}
-        out={out}
-        doTheMath={doTheMath}
       />
       <Board
-        addToInp={addToInp}
+        userInp={userInp}
+        setUserInp={setUserInp}
+        err={err}
         setErr={setErr}
         setOut={setOut}
-        setUserInp={setUserInp}
+        addToInp={addToInp}
         addParenthesis={addParenthesis}
+        doTheMath={doTheMath}
       />
     </div>
   );

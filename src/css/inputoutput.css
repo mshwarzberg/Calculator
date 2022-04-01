@@ -22,7 +22,6 @@
     right: 17%;
 }
 
-
 .outputval {
     background-color: #33333355;
     border-radius: 6px;
@@ -36,13 +35,15 @@
     margin-bottom: 1rem;
     height: 4rem;
     cursor: default;
+    position: relative;
 }
 
-.outputval > * {
-    font-size: 2.5rem;
+#outputtext {
+    font-size: 1em;
     color: #44cc44;
-    float: right;
-    margin: 0.52rem 1rem auto auto;
+    position: absolute;
+    right: 18%;
+    bottom: 0%;
 }
 
 .outputerr {
@@ -55,32 +56,43 @@
     border-radius: 6px;
     background-color: #66000055;
     font-family: 'Roboto Condensed', sans-serif;
+    position: relative;
 }
 
-.outputerr > p {
-    font-size: 2.5rem;
+#outputtexterr {
+    font-size: 2.3rem;
     color: #ff0000;
-    float: right;
-    margin: 0.52rem 1rem auto auto;
+    position: absolute;
+    right: 2%;
 }
 
-#equalssymbol {
-    font-size: 3rem;
-    background: rgb(2,0,36);
-    background: radial-gradient(circle, #ffffff 0%, #00000000 100%);
-    border: 2px solid #555599;
-    border-radius: 6px;
+.inputareasymbols {
+    font-size: 2rem;
     height: 80%;
     width: 15%;
-    color: black;
     position: absolute;
     right: 1%;
     top: 10%;
     cursor: pointer;
+    background-color: #222299;
+    color: #dddddd;
+    text-shadow: 1px 1px 1px #000066;
+    border: 1px solid black;
+    border-radius: 4px;
 }
 
-#equalssymbol:hover {
-    box-shadow: 2px 2px 2px black;
-    animation: hoverButtonScale 200ms forwards 1 linear;
-    text-shadow: 1px 1px 1px black;
+.inputareasymbols:hover {
+    color: white;
+    text-shadow: 3px 3px 1px #000000;
+    animation: 100ms linear forwards hoverButtonScale;
+    background-color: #222299;
+    cursor: pointer;
+    font-size: 2.2rem;
+    border: 1px solid #ffffff;
+}
+
+#parenthesessymbol, #periodsymbol {
+    font-size: 3rem;
+    width: 10rem;
+    height: 10rem;
 }

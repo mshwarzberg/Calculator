@@ -15,7 +15,7 @@
   
 .symbolboard {
     display: grid;
-    grid-template-columns: auto auto;
+    grid-template-columns: auto auto auto;
     box-shadow: 6px 8px 6px #00000080;
     margin-left: 4px;
 }
@@ -42,26 +42,26 @@
   
 .inputsymbol {
     background-color: #222299;
-    width: 10rem;
-    height: 10rem;
-    font-size: 3rem;
+    width: 5rem;
+    height: 5rem;
+    font-size: 2rem;
     color: #bbbbbb;
     text-shadow: 3px 3px 0 #000066;
     border: 1px solid black;
     border-radius: 4px;
 }  
 
-#allclearsymbol {
+#allclearsymbol, #equalssymbol {
     width: 100%;
-    grid-column: span 2;
-}
-#minussymbol {
-    font-size: 7rem;
+    height: 100%;
+    grid-column: span 3;
+    font-size: 2rem;
 }
 
-#exponentsymbol {
-    border-radius: 4px 4px 3rem 4px;
+#minussymbol {
+    font-size: 4rem;
 }
+
 
 .inputnumber:hover {
     color: white;
@@ -79,11 +79,10 @@
     text-shadow: 3px 3px 1px #000000;
     animation: 100ms linear forwards hoverButtonScale;
     cursor: pointer;
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     border: 2px solid #ffffff;
 }
 
 sup {
-    offset-anchor: 3rem;
     font-size: 1.5rem;
 }
