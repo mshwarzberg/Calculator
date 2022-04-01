@@ -21,7 +21,6 @@ h1 {
   margin: auto auto 2rem auto;
   color: #000066;
   font-variant: small-caps;
-  text-decoration: underline;
   background: -webkit-linear-gradient(right,#000000, #ff0000);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -32,6 +31,6 @@ h1 {
   background-image: linear-gradient(to bottom right, #8888ff, #000000);
   background-color: #444444;
   padding: 2rem;
-  border-radius: 2rem;
+  border-radius: 4rem 0.7rem 4rem 0.7rem;
   animation: 800ms linear 0s 1 transportFromRight;
 }

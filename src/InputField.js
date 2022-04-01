@@ -5,13 +5,15 @@ function InputField(props) {
   // assign the prop to its original name for better readability
   const userInp = props.userInp
   const setErr = props.setErr
-  const calculateString = props.calculateString
+  const doTheMath = props.doTheMath
   const setOut = props.setOut
   
+  // Odd bug here. Instead of submitting the user input when a user presses enter the last character of the user input repeatedly gets submitted
   useEffect(() => {
     function pressEnter(e) {
-        if (e.keyCode === 13) {
-            manageUserInp()
+        if (e.key === 'Enter') {
+          setErr(false)
+            return manageUserInp()
         }
     }
     document.addEventListener("keydown", pressEnter);
@@ -21,7 +23,14 @@ function InputField(props) {
   })
   
   function manageUserInp() {
+    
     setOut(() => {
+      // if the input string's first character is '+', '^', '÷', '×' return error
+      if (userInp.match(/^[+÷×^]/)) {
+        setErr(true)
+        return 'Strange first character you have there'
+      }
+      // if there is nothing to retur
       if (userInp.length === 0) {
         setErr(true);
         return "There is nothing to see here. Move along";
@@ -32,10 +41,11 @@ function InputField(props) {
 
       if (totalClosed !== totalOpen) {
         setErr(true);
-        return "You should close yo goddamn parentheses";
+        return "Close your parentheses";
       }
 
-      let compute = userInp;
+      var compute = userInp;
+      
       var parentheses;
       while (!Number(compute)) {
         // only assign compute to parentheses if current is undefined because if the value is reset it will loop forever since it will constantly be reassigned to its original value.
@@ -51,7 +61,7 @@ function InputField(props) {
         for (let strInd = 0; strInd < parentheses.length; strInd++) {
           // if it doesn't include other sets calculate the value of the arithmetic set and return it
           if (!parentheses.includes("(") && !parentheses.includes(")")) {
-            return props.calculateString(parentheses);
+            return props.doTheMath(parentheses);
           }
           if (parentheses[strInd] === "(") {
             amountOfOpen++;
@@ -72,7 +82,7 @@ function InputField(props) {
                 // the old parentheses value
                 insertVal,
                 // the new shiny parentheses-less value
-                calculateString(parentheses)
+                doTheMath(parentheses)
               );
               // set it to undefined so it can be reassigned to compute on the re-loop
               parentheses = undefined;
@@ -82,14 +92,30 @@ function InputField(props) {
         }
       }
       // if compute does not contain any parentheses calculate it and return the value
-      return calculateString(compute);
+      return doTheMath(compute);
     });
   }
+
+  function renderedInput(input) {
+    input = input.replace(/\^(\d+)?(\(.*\))?/g, "<sup>$1$2</sup>")
+    return <div dangerouslySetInnerHTML={{ __html: input}} className='renderinput'/>
+  }
+
+  function renderedOutput(output) {
+    if (output[0]) {
+      output = output.toString()
+      if (output.includes('.')) {
+        return output
+      }
+      output = output.replace(/(?<=\d)(?=(?:\d\d\d)+(?!\d))/g, ",")
+      return output
+    }
+  }
+
   return (
     <div>
       <h1>Calculator</h1>
       <div
-        className="showval"
         title="Type to or click buttons to add to the input"
       >
         <div className="inputval">
@@ -104,13 +130,13 @@ function InputField(props) {
             =
           </button>
 
-          {<p>&nbsp;&nbsp;{props.userInp}</p>}
+          &nbsp;&nbsp;{renderedInput(userInp)}
         </div>
 
         {props.err ? (
-          <div className="outputerr">{props.out}</div>
+          <div className="outputerr"><p>{props.out}</p></div>
         ) : (
-          <div className="outputval">Result:&nbsp;{props.out}</div>
+          <div className="outputval"><p>{renderedOutput(props.out)}</p></div>
         )}
       </div>
     </div>

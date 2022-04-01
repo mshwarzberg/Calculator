@@ -56,8 +56,11 @@
     grid-column: span 2;
 }
 #minussymbol {
-    font-weight: 100;
     font-size: 7rem;
+}
+
+#exponentsymbol {
+    border-radius: 4px 4px 3rem 4px;
 }
 
 .inputnumber:hover {
@@ -81,5 +84,6 @@
 }
 
 sup {
+    offset-anchor: 3rem;
     font-size: 1.5rem;
 }

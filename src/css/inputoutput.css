@@ -1,15 +1,6 @@
-@keyframes test {
-    0% {
-        transform: skew(3);
-    }
-    100% {
-        transform: skew(0);
-    }
-}
-
 .inputval {
     background-color: #33333355;
-    border-radius: 6px;
+    border-radius: 3rem 6px 6px 6px;
     color: royalblue;
     padding: 1rem;
     font-weight: bold;
@@ -20,15 +11,20 @@
     text-shadow: 2px 2px 2px black;
     height: 4rem;
     margin-bottom: 1rem;
+    cursor: default;
+    position: relative;
 }
 
-.inputval > p {
-    float: right;
-    margin: 0.52rem 1rem auto auto;
+.inputval > div {
+    position: absolute;
+    height: 50%;
+    top: 25%;
+    right: 17%;
 }
+
 
 .outputval {
-    background-color: #00ff0033;
+    background-color: #33333355;
     border-radius: 6px;
     padding: 1rem;
     font-weight: bold;
@@ -37,40 +33,54 @@
     max-width: 49rem;
     text-indent: -1rem;
     text-shadow: 2px 2px 2px black;
-    text-align: right;
     margin-bottom: 1rem;
-    color: #009900;
+    height: 4rem;
+    cursor: default;
+}
+
+.outputval > * {
+    font-size: 2.5rem;
+    color: #44cc44;
+    float: right;
+    margin: 0.52rem 1rem auto auto;
 }
 
 .outputerr {
-    text-align: right;
+    height: 4rem;
+    display: flex;
+    align-items: center;
     padding: 1rem;
     margin-bottom: 1rem;
     font-size: 2rem;
-    color: #ff0000;
-    text-indent: -4px;
     border-radius: 6px;
     background-color: #66000055;
     font-family: 'Roboto Condensed', sans-serif;
 }
 
-#equalssymbol {
+.outputerr > p {
     font-size: 2.5rem;
-    background-color: blue;
-    border: 3px solid skyblue;
-    box-shadow: 3px 3px 10px black;
-    width: 10%;
-    color: white;
-    text-shadow: 2px 2px 3px skyblue;
+    color: #ff0000;
     float: right;
-    margin-top: 0.3rem;
+    margin: 0.52rem 1rem auto auto;
+}
+
+#equalssymbol {
+    font-size: 3rem;
+    background: rgb(2,0,36);
+    background: radial-gradient(circle, #ffffff 0%, #00000000 100%);
+    border: 2px solid #555599;
+    border-radius: 6px;
+    height: 80%;
+    width: 15%;
+    color: black;
+    position: absolute;
+    right: 1%;
+    top: 10%;
+    cursor: pointer;
 }
 
 #equalssymbol:hover {
-    border: 1px solid darkgreen;
-    box-shadow: 2px 2px 2px green;
+    box-shadow: 2px 2px 2px black;
     animation: hoverButtonScale 200ms forwards 1 linear;
-    cursor: pointer;
-    background-color: skyblue;
-    text-shadow: 2px 2px 1px blue;
+    text-shadow: 1px 1px 1px black;
 }

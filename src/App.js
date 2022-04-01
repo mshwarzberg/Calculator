@@ -1,68 +1,67 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import Board from "./Board";
 import InputField from "./InputField";
 
 function App() {
+  // these should be self explanatory
   const [userInp, setUserInp] = useState("");
   const [out, setOut] = useState("");
   const [err, setErr] = useState(false);
-
+  // handle user input
   function addToInp(val) {
     const lastItem = userInp[userInp.length - 1];
     // if there is a period in the current 'number set' (meaning it's already a float) don't allow another period
-    if (val === '.') {
+    if (val === ".") {
       for (let ind = userInp.length - 1; ind >= 0; ind--) {
-        if (userInp[ind] === '.') {
-          return
+        if (userInp[ind] === ".") {
+          return;
         }
+        // if the character next up in the string is a special char it means the number 'checked' is not already a float
         if (isNaN(userInp[ind])) {
-          break
+          break;
         }
       }
     }
-    // if the previous character in the input is a non number or one of the three chars mentioned replace the character with the new input
+    // prevent user from adding multiple arithemitc symbols in a row. If the previous char in the input is already a symbol the current character will replace the previous one.
     if (
       isNaN(lastItem) &&
       isNaN(val) &&
       lastItem !== "." &&
       lastItem !== "(" &&
       lastItem !== ")" &&
-      val !== '('
-
-      ) {
+      val !== "("
+    ) {
       setUserInp((prevVal) => prevVal.slice(0, -1));
     }
     // if a user adds a number after closing parentheses, or if a user adds opening parentheses and the previous character is a number, automatically add a multiplication symbol beforehand
     if (
-      (lastItem === ")" && (Number(val) || val === '(')) ||
+      (lastItem === ")" && (Number(val) || val === "(")) ||
       (val === "(" && Number(lastItem))
     ) {
       setUserInp((prevVal) => prevVal + "×");
     }
-    
+
     setUserInp((prevVal) => prevVal + val);
   }
 
+  // handle adding parentheses
   function addParenthesis() {
     // count the amount of times the opening and closing parentheses appear in userInp
     var openParent = (userInp.match(/\(/g) || []).length;
     var closeParent = (userInp.match(/\)/g) || []).length;
     const prevItem = userInp[userInp.length - 1];
 
-    // example: '32+423/(342-'
-    // if the user presses the parentheses button it should close.
-
-    // if they match open a new parentheses
+    // if the amount of times '(' and ')' show up are equivalent or if the last item is an arithmetic symbol open new parentheses
     if (openParent === closeParent || (isNaN(prevItem) && prevItem !== ")")) {
       return addToInp("(");
     }
-
+    // if there are more '(' than ')' and the previous statements are false close the previous parentheses
     if (openParent > closeParent) {
       return addToInp(")");
     }
   }
-
-  function calculateString(str) {
+  // handle the math. This function will run multiple times if there are parentheses involved.
+  function doTheMath(str) {
     // this matches all the floats, negatives and integers in the string
     let mathArr = str.match(/([-]\d+[.]\d+)?([-]\d+)?(\d+[.]\d+)?(\d+)?/g);
     // this matches all the arithmetic symbols
@@ -70,7 +69,6 @@ function App() {
 
     // this will be the index in the array of symbols
     let symbolsInStrInd = 0;
-
     // insert the symbols from the array of symbols into the array of numbers at the index where regex didn't match anything (it returns an empty string)
     for (let arrInd = 0; arrInd < mathArr.length; arrInd++) {
       // if the index is empty (meaning it didn't match in regex), pull the value from the symbols array
@@ -79,13 +77,15 @@ function App() {
         symbolsInStrInd++;
       }
     }
-    // add a '+' before every negative number. Pretty dang specific example: 6÷(0-1) would return a 'divided by zero error' because the 0 won't go away, and the program would read it as 6÷0-1
+    // add a '+' before every negative number. Pretty specific example: 6÷(0-1) would return a 'divided by zero error' because the 0 won't go away, and the program would read it as 6÷0-1
     for (let arrInd = 0; arrInd + 1 < mathArr.length; arrInd++) {
+      // check if the first character in each string is a '-', and that it's not the first item in the array, and that the previous item in array isn't an arithmetic symbol.
       if (
         mathArr[arrInd][0] === "-" &&
         arrInd !== 0 &&
         mathArr[arrInd - 1].match(/[^+÷×]/g)
       ) {
+        // insert '+' into the previous slot in the array
         mathArr.splice(arrInd, 0, "+");
         arrInd++;
       }
@@ -106,7 +106,7 @@ function App() {
     // the length of the array will change so keeping a constant will prevent the for loop from breaking
     const mathArrLength = mathArr.length;
 
-    // while mathArr includes exponents calculate it before calculating other stuff
+    // calculate exponents before other arithmetics.
     while (mathArr.includes("^")) {
       const exponentInd = mathArr.indexOf("^");
       var exponent =
@@ -126,12 +126,15 @@ function App() {
           // do multiplication
           if (mathArrVal === "×") {
             var multiplication =
+              // the x*1 is to make sure that the numbers are treated as such, rather than strings
               mathArr[mathArrInd - 1] * 1 * (mathArr[mathArrInd + 1] * 1);
+            // remove the three items in the array that the calculation was completed on and replace it with the result
             mathArr.splice(mathArrInd - 1, 3, multiplication);
             mathArrInd = 0;
           }
           // do division
           if (mathArrVal === "÷") {
+            // ↑↑↑
             var division =
               (mathArr[mathArrInd - 1] * 1) / (mathArr[mathArrInd + 1] * 1);
             mathArr.splice(mathArrInd - 1, 3, division);
@@ -139,6 +142,7 @@ function App() {
           }
           // do addition
           if (mathArrVal === "+") {
+            // ↑↑↑
             var addition =
               mathArr[mathArrInd - 1] * 1 + mathArr[mathArrInd + 1] * 1;
             mathArr.splice(mathArrInd - 1, 3, addition);
@@ -146,6 +150,7 @@ function App() {
           }
           // do subtraction
           if (mathArrVal === "-") {
+            // ↑↑↑
             var subtraction =
               mathArr[mathArrInd - 1] * 1 - mathArr[mathArrInd + 1] * 1;
             mathArr.splice(mathArrInd - 1, 3, subtraction);
@@ -153,14 +158,13 @@ function App() {
           }
         }
       }
-      // once the for loop is completed all the chars switch to addition and subtraction
+      // once multiplication and division are completed, do addition and subtraction
       symbols = { symOne: "+", symTwo: "-" };
     }
-    // if a user tries to divide by zero
+    // if a user tries to divide by zero, or give a calculation that returns a value that is too high.
     if (mathArr[0] === Infinity) {
       setErr(true);
-      setOut("You tryna break the universe? You can't divide by zero");
-      return;
+      return setOut("You tryna break the universe? You can't divide by zero");
     }
     return mathArr;
   }
@@ -173,7 +177,7 @@ function App() {
         setOut={setOut}
         err={err}
         out={out}
-        calculateString={calculateString}
+        doTheMath={doTheMath}
       />
       <Board
         addToInp={addToInp}

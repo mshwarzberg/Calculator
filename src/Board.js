@@ -7,7 +7,7 @@ function Board(props) {
           if (e.keyCode === 8) {
             props.setUserInp((prevVal) => prevVal.slice(0, -1));
           }
-          // if user clicks number
+          // if user types number
           if (
             // number row
             ((e.keyCode >= 48 && e.keyCode <= 57) ||
@@ -97,6 +97,7 @@ function Board(props) {
             onClick={allClear}
             className="inputsymbol"
             id="allclearsymbol"
+            title='All Clear'
           >
             AC
           </button>
@@ -105,8 +106,9 @@ function Board(props) {
                 props.setUserInp((prevVal) => prevVal.slice(0, -1));
             }}
             className="inputsymbol"
+            title='Backspace'
           >
-            &lt;=
+            ←
           </button>
           <button onClick={() => props.addToInp("+")} className="inputsymbol">
             +
