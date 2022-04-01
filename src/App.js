@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import Board from "./Board";
-import InputField from "./InputField";
+import Board from "./Components/Board";
+import InputField from "./Components/InputField";
 
 function App() {
   // these should be self explanatory
-  const [userInp, setUserInp] = useState("6×(3-3)");
+  const [userInp, setUserInp] = useState("");
   const [out, setOut] = useState("");
   const [err, setErr] = useState(false);
   // handle user input
@@ -166,9 +166,9 @@ function App() {
       return '0'
     }
     // if a user tries to divide by zero, or give a calculation that returns a value that is too high.
-    if (mathArr[0] === Infinity) {
+    if (mathArr[0] === Infinity || isNaN(mathArr[0])) {
       setErr(true);
-      return setOut("You tryna break the universe? You can't divide by zero");
+      return setOut("Can't divide by zero");
     }
     return mathArr;
   }

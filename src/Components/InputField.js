@@ -44,7 +44,7 @@ function InputField(props) {
           >
             ←
           </button>
-          &nbsp;&nbsp;{renderedInput(props.userInp)}
+          {renderedInput(props.userInp)}
         </div>
 
         {props.err ? (

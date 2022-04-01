@@ -15,9 +15,10 @@
   
 .symbolboard {
     display: grid;
-    grid-template-columns: auto auto auto;
+    grid-template-columns: auto auto;
     box-shadow: 6px 8px 6px #00000080;
     margin-left: 4px;
+    width: 20rem;
 }
 
 .numberboard {
@@ -42,8 +43,6 @@
   
 .inputsymbol {
     background-color: #222299;
-    width: 5rem;
-    height: 5rem;
     font-size: 2rem;
     color: #bbbbbb;
     text-shadow: 3px 3px 0 #000066;
